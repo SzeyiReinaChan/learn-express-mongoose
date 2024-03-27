@@ -55,10 +55,16 @@ app.get('/book_dtls', (req, res) => {
 })
 
 app.post('/newbook', (req, res) => {
-    const familyName = req.body.familyName;
-    const firstName = req.body.firstName;
+    let familyName = req.body.familyName;
+    let firstName = req.body.firstName;
     const genreName = req.body.genreName;
     const bookTitle = req.body.bookTitle;
+    const regex = /^[a-zA-Z ]+$/;
+    familyName = familyName.replace(regex, '');
+    firstName = firstName.replace(regex, '');
+    genreName = genreName.replace(regex, '');
+    bookTitle = bookTitle.replace(regex, '');
+
     if(familyName && firstName && genreName && bookTitle) {
         CreateBook.new_book(res, familyName, firstName, genreName, bookTitle).catch(err => {
                 res.send('Failed to create new book ' + err);
